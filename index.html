@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Рулетка привилегий — 113 дней рождения</title>
+  <style>
+    :root{
+      --bg:#090807;
+      --bg2:#11100e;
+      --panel:#11100e;
+      --panel2:#171411;
+      --gold:#d4b06c;
+      --gold2:#f0d5a2;
+      --burg:#5a1017;
+      --burg2:#7a1721;
+      --cream:#f5ead7;
+      --muted:#bba98e;
+      --line:rgba(212,176,108,.36);
+      --shadow:0 18px 60px rgba(0,0,0,.48);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(122,23,33,.10), transparent 34%),
+        linear-gradient(180deg,#0a0908 0%,#080706 100%);
+      color:var(--cream);
+      font-family: Georgia, "Times New Roman", serif;
+      min-height:100vh;
+    }
+
+    .page{
+      width:min(1120px, calc(100% - 32px));
+      margin:0 auto;
+      padding:38px 0 56px;
+    }
+
+    .eyebrow{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      letter-spacing:.34em;
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    h1{
+      margin:0;
+      text-align:center;
+      font-weight:500;
+      text-transform:uppercase;
+      font-size:clamp(42px,7vw,86px);
+      line-height:.9;
+      letter-spacing:.015em;
+      color:var(--gold2);
+    }
+
+    .subtitle{
+      text-align:center;
+      margin-top:14px;
+      font-size:clamp(16px,2.4vw,24px);
+      font-style:italic;
+      color:#e5d5bc;
+    }
+
+    .rule{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      margin:16px auto 28px;
+      color:var(--gold);
+      font-size:12px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+    }
+
+    .rule:before,.rule:after{
+      content:"";
+      width:90px;
+      max-width:18vw;
+      height:1px;
+      background:var(--line);
+    }
+
+    .stage{
+      display:grid;
+      grid-template-columns:minmax(300px, 620px) minmax(260px, 1fr);
+      gap:34px;
+      align-items:center;
+      margin-top:20px;
+    }
+
+    .wheel-wrap{
+      position:relative;
+      width:min(100%,620px);
+      aspect-ratio:1;
+      margin:auto;
+      filter:drop-shadow(0 20px 40px rgba(0,0,0,.42));
+    }
+
+    .pointer{
+      position:absolute;
+      z-index:8;
+      left:50%;
+      top:-8px;
+      transform:translateX(-50%);
+      width:0;height:0;
+      border-left:18px solid transparent;
+      border-right:18px solid transparent;
+      border-top:0;
+      border-bottom:46px solid var(--gold2);
+      filter:drop-shadow(0 4px 10px rgba(0,0,0,.5));
+    }
+
+    .pointer:after{
+      content:"";
+      position:absolute;
+      left:-9px;
+      top:8px;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:var(--burg2);
+      border:2px solid #2a0a0d;
+    }
+
+    .wheel-shell{
+      position:absolute;
+      inset:12px;
+      border-radius:50%;
+      padding:10px;
+      background:linear-gradient(135deg,#f2d79f,#8d6d36 32%,#efcf8d 62%,#6e5126);
+      box-shadow:
+        0 0 0 2px rgba(255,255,255,.05) inset,
+        0 0 0 1px #2a1c0e,
+        0 24px 50px rgba(0,0,0,.35);
+    }
+
+    #wheel{
+      width:100%;
+      height:100%;
+      display:block;
+      border-radius:50%;
+      transform-origin:50% 50%;
+      transition:transform 5.2s cubic-bezier(.12,.78,.08,1);
+    }
+
+    .hub{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:31%;
+      aspect-ratio:1;
+      border-radius:50%;
+      background:radial-gradient(circle at 45% 38%,#191715,#0b0a09 72%);
+      border:2px solid var(--gold);
+      box-shadow:
+        0 0 0 7px rgba(8,7,6,.9),
+        0 0 0 9px rgba(212,176,108,.65),
+        0 10px 25px rgba(0,0,0,.45);
+      display:grid;
+      place-items:center;
+      text-align:center;
+      z-index:5;
+      padding:14px;
+    }
+
+    .hub .crown{
+      color:var(--gold);
+      font-size:19px;
+      line-height:1;
+      margin-bottom:5px;
+    }
+
+    .hub strong{
+      font-size:clamp(18px,3vw,34px);
+      font-weight:500;
+      letter-spacing:.12em;
+      color:var(--gold2);
+      display:block;
+    }
+
+    .hub span{
+      display:block;
+      margin-top:6px;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.24em;
+      color:var(--muted);
+    }
+
+    .controls{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .spin{
+      min-width:230px;
+      min-height:58px;
+      padding:15px 34px;
+      border-radius:999px;
+      border:1px solid var(--gold);
+      outline:1px solid rgba(212,176,108,.3);
+      outline-offset:4px;
+      color:var(--cream);
+      background:linear-gradient(180deg,#791925,#4f0e15);
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:19px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:.2s ease;
+      box-shadow:0 12px 34px rgba(0,0,0,.34);
+    }
+
+    .spin:hover{transform:translateY(-1px);background:linear-gradient(180deg,#8b1d29,#5a1119)}
+    .spin:disabled{cursor:default;opacity:.58;transform:none}
+
+    .side{
+      min-width:0;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,.018),rgba(255,255,255,.006));
+      padding:24px;
+    }
+
+    .card + .card{margin-top:18px}
+
+    .card h2{
+      margin:0 0 14px;
+      font-weight:500;
+      font-size:25px;
+      color:var(--gold2);
+    }
+
+    .card p{
+      margin:0;
+      color:#dbcdb6;
+      font-size:16px;
+      line-height:1.58;
+    }
+
+    .rules{
+      margin:0;
+      padding-left:20px;
+      color:#dbcdb6;
+      line-height:1.62;
+    }
+    .rules li+li{margin-top:8px}
+
+    .fine{
+      margin-top:16px!important;
+      color:var(--muted)!important;
+      font-size:13px!important;
+      font-style:italic;
+    }
+
+    .status{
+      min-height:118px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    .status-kicker{
+      color:var(--muted);
+      font-size:11px;
+      letter-spacing:.23em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+
+    #resultTitle{
+      margin:0;
+      font-size:clamp(26px,3.4vw,40px);
+      color:var(--gold2);
+      font-weight:500;
+      line-height:1.08;
+    }
+
+    #resultText{
+      margin-top:10px;
+      color:#e4d5bd;
+      font-size:16px;
+      line-height:1.5;
+    }
+
+    .prizes{
+      margin-top:28px;
+      border-top:1px solid var(--line);
+      padding-top:28px;
+      opacity:0;
+      transform:translateY(12px);
+      transition:.6s ease;
+      pointer-events:none;
+    }
+
+    .prizes.visible{
+      opacity:1;
+      transform:none;
+      pointer-events:auto;
+    }
+
+    .prizes h3{
+      margin:0 0 15px;
+      font-size:26px;
+      font-weight:500;
+      color:var(--gold2);
+    }
+
+    .prize-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+
+    .prize{
+      min-width:0;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 15px;
+      border:1px solid rgba(212,176,108,.18);
+      background:#0d0c0b;
+      color:#d8c9b1;
+      opacity:.58;
+      transition:.25s ease;
+    }
+
+    .prize.win{
+      opacity:1;
+      border-color:var(--gold);
+      background:linear-gradient(180deg,rgba(122,23,33,.32),rgba(122,23,33,.12));
+      box-shadow:0 0 0 1px rgba(212,176,108,.18) inset;
+    }
+
+    .num{
+      flex:0 0 26px;
+      width:26px;
+      height:26px;
+      border:1px solid var(--gold);
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      color:var(--gold2);
+      font-size:13px;
+      margin-top:1px;
+    }
+
+    .prize b{
+      display:block;
+      font-weight:500;
+      line-height:1.35;
+    }
+
+    .prize small{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+    }
+
+    .foot{
+      margin-top:32px;
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      letter-spacing:.23em;
+      text-transform:uppercase;
+    }
+
+    @media(max-width:850px){
+      .stage{grid-template-columns:1fr; gap:18px}
+      .side{width:min(620px,100%);margin:auto}
+      .prize-grid{grid-template-columns:1fr}
+      .page{width:min(100% - 22px,720px);padding-top:24px}
+      .card{padding:18px}
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      #wheel,.prizes,.spin{transition:none}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="eyebrow">113 дней рождения</div>
+    <h1>Рулетка<br>привилегий</h1>
+    <div class="subtitle">для Ани • один шанс • никаких пересмотров</div>
+    <div class="rule">случайность тоже любит тебя</div>
+
+    <section class="stage">
+      <div>
+        <div class="wheel-wrap">
+          <div class="pointer" aria-hidden="true"></div>
+
+          <div class="wheel-shell">
+            <svg id="wheel" viewBox="0 0 600 600" role="img" aria-label="Рулетка из восьми одинаковых секретных секторов">
+              <g id="segments"></g>
+            </svg>
+          </div>
+
+          <div class="hub">
+            <div>
+              <div class="crown">♛</div>
+              <strong>ANNA<br>ROYALE</strong>
+              <span>секретные сектора</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="spin" id="spinBtn" type="button">Крутить</button>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="card status" aria-live="polite">
+          <div class="status-kicker">Вердикт системы</div>
+          <h2 id="resultTitle">Все призы пока засекречены</h2>
+          <p id="resultText">Колесо можно запустить только один раз. Сначала откроется выигрыш, затем — всё, что могло бы выпасть.</p>
+        </div>
+
+        <div class="card">
+          <h2>Правила</h2>
+          <ol class="rules">
+            <li>Все 8 секторов визуально одинаковые.</li>
+            <li>Колесо можно крутить только один раз.</li>
+            <li>Сначала открывается выигрышный сектор.</li>
+            <li>После этого раскрываются остальные семь призов.</li>
+          </ol>
+          <p class="fine">Система может быть необъективна.</p>
+        </div>
+      </aside>
+    </section>
+
+    <section class="prizes" id="prizesBlock" aria-hidden="true">
+      <h3>Что ещё было на колесе</h3>
+      <div class="prize-grid" id="prizeGrid"></div>
+    </section>
+
+    <div class="foot">Одна Аня • восемь возможностей • один спин</div>
+  </main>
+
+  <script>
+    (() => {
+      const prizes = [
+        { name: "Портрет Путина", short: ["Портрет","Путина"], weight: 25 },
+        { name: "Алиса выполняет любую твою рабочую задачу", short: ["Рабочая","задача"], weight: 10 },
+        { name: "57 рублей", short: ["57","рублей"], weight: 8 },
+        { name: "Кофе на выбор", short: ["Кофе","на выбор"], weight: 8 },
+        { name: "Алиса весь день на все твои просьбы отвечает ДА", short: ["Весь день","ДА"], weight: 7 },
+        { name: "Подсвечник", short: ["Подсвечник",""], weight: 20 },
+        { name: "Набор цветного пластилина", short: ["Цветной","пластилин"], weight: 5 },
+        { name: "Грамота", short: ["Грамота",""], weight: 17 }
+      ];
+
+      const svg = document.getElementById("wheel");
+      const group = document.getElementById("segments");
+      const btn = document.getElementById("spinBtn");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultText = document.getElementById("resultText");
+      const prizesBlock = document.getElementById("prizesBlock");
+      const prizeGrid = document.getElementById("prizeGrid");
+
+      const NS = "http://www.w3.org/2000/svg";
+      const cx = 300, cy = 300, r = 290;
+      const slice = 360 / prizes.length;
+      let used = false;
+      let rotation = 0;
+      const segmentNodes = [];
+
+      const polar = (angleDeg, radius=r) => {
+        const a = (angleDeg - 90) * Math.PI / 180;
+        return [cx + radius * Math.cos(a), cy + radius * Math.sin(a)];
+      };
+
+      const wedgePath = (start, end) => {
+        const [x1,y1] = polar(start);
+        const [x2,y2] = polar(end);
+        const large = end - start > 180 ? 1 : 0;
+        return `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2} Z`;
+      };
+
+      const makeText = (x,y,text,size=42,weight="400") => {
+        const t = document.createElementNS(NS,"text");
+        t.setAttribute("x",x);
+        t.setAttribute("y",y);
+        t.setAttribute("text-anchor","middle");
+        t.setAttribute("dominant-baseline","middle");
+        t.setAttribute("fill","#f0d5a2");
+        t.setAttribute("font-family",'Georgia, "Times New Roman", serif');
+        t.setAttribute("font-size",size);
+        t.setAttribute("font-weight",weight);
+        t.textContent=text;
+        return t;
+      };
+
+      prizes.forEach((p,i) => {
+        const g = document.createElementNS(NS,"g");
+        const start = i*slice;
+        const end = start+slice;
+
+        const path = document.createElementNS(NS,"path");
+        path.setAttribute("d",wedgePath(start,end));
+        path.setAttribute("fill", i%2===0 ? "#5a1017" : "#11100e");
+        path.setAttribute("stroke","#d4b06c");
+        path.setAttribute("stroke-width","1.5");
+        g.appendChild(path);
+
+        const mid = start + slice/2;
+        const [tx,ty] = polar(mid,190);
+
+        const mark = makeText(tx,ty,"?",52);
+        mark.setAttribute("data-role","mark");
+        g.appendChild(mark);
+
+        const ring = document.createElementNS(NS,"circle");
+        ring.setAttribute("cx",tx);
+        ring.setAttribute("cy",ty);
+        ring.setAttribute("r","38");
+        ring.setAttribute("fill","none");
+        ring.setAttribute("stroke","rgba(240,213,162,.58)");
+        ring.setAttribute("stroke-width","1.2");
+        ring.setAttribute("stroke-dasharray", i%2 ? "2 6" : "0");
+        g.appendChild(ring);
+
+        segmentNodes.push({g,path,mark,tx,ty});
+        group.appendChild(g);
+      });
+
+      function secureRandom() {
+        if (window.crypto && crypto.getRandomValues) {
+          const a = new Uint32Array(1);
+          crypto.getRandomValues(a);
+          return a[0] / 4294967296;
+        }
+        return Math.random();
+      }
+
+      function weightedPick() {
+        const total = prizes.reduce((s,p)=>s+p.weight,0);
+        let n = secureRandom()*total;
+        for (let i=0;i<prizes.length;i++) {
+          n -= prizes[i].weight;
+          if (n < 0) return i;
+        }
+        return prizes.length-1;
+      }
+
+      function keepLabelsUpright() {
+        const angle = ((rotation % 360) + 360) % 360;
+        segmentNodes.forEach(node => {
+          node.mark.setAttribute(
+            "transform",
+            `rotate(${-angle} ${node.tx} ${node.ty})`
+          );
+        });
+      }
+
+      function revealSegment(index, winning=false) {
+        const node = segmentNodes[index];
+        node.mark.textContent = "";
+        node.mark.setAttribute("font-size","20");
+
+        const first = document.createElementNS(NS,"tspan");
+        first.setAttribute("x",node.tx);
+        first.setAttribute("dy","-8");
+        first.textContent = prizes[index].short[0];
+
+        const second = document.createElementNS(NS,"tspan");
+        second.setAttribute("x",node.tx);
+        second.setAttribute("dy","27");
+        second.textContent = prizes[index].short[1];
+
+        node.mark.appendChild(first);
+        if(prizes[index].short[1]) node.mark.appendChild(second);
+
+        if (winning) {
+          node.path.setAttribute("fill","#7a1721");
+          node.path.setAttribute("stroke","#f0d5a2");
+          node.path.setAttribute("stroke-width","3");
+          node.g.style.filter = "drop-shadow(0 0 9px rgba(240,213,162,.45))";
+        } else {
+          node.path.setAttribute("opacity",".66");
+          node.mark.setAttribute("fill","#c7b492");
+        }
+      }
+
+      function buildPrizeList(winner) {
+        prizeGrid.innerHTML = "";
+        prizes.forEach((p,i)=>{
+          const item = document.createElement("div");
+          item.className = "prize" + (i===winner ? " win" : "");
+          item.innerHTML =
+            `<div class="num">${i+1}</div>
+             <div><b>${p.name}</b><small>${i===winner ? "выпало" : "не выпало"}</small></div>`;
+          prizeGrid.appendChild(item);
+        });
+      }
+
+      btn.addEventListener("click", () => {
+        if (used) return;
+        used = true;
+        btn.disabled = true;
+        btn.textContent = "Судьба решает…";
+
+        const winner = weightedPick();
+
+        // Визуально секторы одинаковые. Вероятности задаются только весами выше.
+        // Сектор 0 находится от 12:00 до 1:30. Центр каждого сектора = 22.5° + 45°*i.
+        const sectorCenter = winner * slice + slice/2;
+        const targetAngle = 360 - sectorCenter;
+        const turns = 7 + Math.floor(secureRandom()*3);
+        rotation += turns*360 + targetAngle;
+        svg.style.transform = `rotate(${rotation}deg)`;
+
+        setTimeout(() => {
+          keepLabelsUpright();
+          revealSegment(winner, true);
+          resultTitle.textContent = prizes[winner].name;
+          resultText.textContent = "Это твой единственный официальный выигрыш. Перекрутить нельзя.";
+          btn.textContent = "Результат зафиксирован";
+
+          setTimeout(() => {
+            prizes.forEach((_,i)=>{ if(i!==winner) revealSegment(i,false); });
+            buildPrizeList(winner);
+            prizesBlock.classList.add("visible");
+            prizesBlock.setAttribute("aria-hidden","false");
+            prizesBlock.scrollIntoView({behavior:"smooth",block:"nearest"});
+          }, 1300);
+        }, 5250);
+      });
+    })();
+  </script>
+</body>
+</html>

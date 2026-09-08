@@ -387,6 +387,39 @@
       .card{padding:18px}
     }
 
+
+    @media(max-width:520px){
+      .rule{
+        gap:8px;
+        font-size:10px;
+        letter-spacing:.12em;
+        white-space:nowrap;
+        line-height:1.2;
+        margin:14px auto 22px;
+      }
+
+      .rule:before,
+      .rule:after{
+        width:34px;
+        max-width:none;
+        flex:0 0 34px;
+      }
+    }
+
+    @media(max-width:390px){
+      .rule{
+        font-size:9px;
+        letter-spacing:.08em;
+        gap:6px;
+      }
+
+      .rule:before,
+      .rule:after{
+        width:20px;
+        flex-basis:20px;
+      }
+    }
+
     @media(prefers-reduced-motion:reduce){
       html{scroll-behavior:auto}
       #wheel,.prizes,.spin{transition:none}
@@ -435,10 +468,8 @@
         <div class="card">
           <h2>Правила</h2>
           <ol class="rules">
-            <li>Все 8 секторов визуально одинаковые.</li>
-            <li>Колесо можно крутить только один раз.</li>
-            <li>Сначала открывается выигрышный сектор.</li>
-            <li>После этого раскрываются остальные семь призов.</li>
+            <li>Крутить рулетку можно только один раз.</li>
+            <li>Чтобы получить выпавший приз, пришли скрин экрана с результатом в соответствующий чат.</li>
           </ol>
           <p class="fine">Система может быть необъективна.</p>
         </div>

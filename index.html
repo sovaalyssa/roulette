@@ -388,35 +388,40 @@
     }
 
 
+
+    .rule-mobile{display:none}
+    .rule-desktop{display:inline}
+
     @media(max-width:520px){
       .rule{
-        gap:8px;
+        display:block;
+        margin:16px auto 24px;
+        text-align:center;
         font-size:10px;
-        letter-spacing:.12em;
-        white-space:nowrap;
-        line-height:1.2;
-        margin:14px auto 22px;
+        line-height:1.55;
+        letter-spacing:.24em;
+        white-space:normal;
       }
 
       .rule:before,
       .rule:after{
-        width:34px;
-        max-width:none;
-        flex:0 0 34px;
+        display:none;
+        content:none;
+      }
+
+      .rule-desktop{display:none}
+      .rule-mobile{
+        display:inline-block;
+        text-align:center;
+        white-space:nowrap;
       }
     }
 
     @media(max-width:390px){
       .rule{
         font-size:9px;
-        letter-spacing:.08em;
-        gap:6px;
-      }
-
-      .rule:before,
-      .rule:after{
-        width:20px;
-        flex-basis:20px;
+        letter-spacing:.20em;
+        line-height:1.5;
       }
     }
 
@@ -431,7 +436,7 @@
     <div class="eyebrow">113 дней рождения</div>
     <h1>Рулетка<br>привилегий</h1>
     <div class="subtitle">для Ани • один шанс • никаких пересмотров</div>
-    <div class="rule">случайность тоже любит тебя</div>
+    <div class="rule"><span class="rule-desktop">случайность тоже любит тебя</span><span class="rule-mobile">случайность тоже<br>любит тебя</span></div>
 
     <section class="stage">
       <div>
